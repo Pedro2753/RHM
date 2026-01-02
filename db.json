@@ -1,0 +1,358 @@
+{
+  "funcionarios": [],
+  "users": [],
+  "enterprises": [
+    {
+      "id": "0325",
+      "name": "Lojas Renner",
+      "razao": "Lojas Renner S.A",
+      "email": "renner@gmail.com",
+      "fone": "(21) 98174-4994",
+      "cep": "26297-237",
+      "city": "Nova Iguaçu",
+      "district": "Paraíso",
+      "state": {
+        "id": "19",
+        "name": "Rio de Janeiro"
+      },
+      "date": "1998-10-21",
+      "mei": "Sim",
+      "capital": "R$ 1.000.000,00",
+      "status": "Ativa",
+      "positions": [
+        {
+          "name": "Auxiliar de Expedição",
+          "wage": "15000",
+          "description": "Auxiliar em operações logisticas",
+          "id": "cf91c6a8-f849-4d56-92ac-64abb1165458"
+        },
+        {
+          "name": "Operador de Empilhadeira",
+          "wage": "1500",
+          "description": "Operar veiculos de empilhadeira de acordo com as normas e requisições da empresa.",
+          "id": "499e8c3c-dae8-4f6a-b37b-048abbdaba3b"
+        }
+      ],
+      "photo": "https://res.cloudinary.com/dymuksbru/image/upload/v1760978305/cpdsf96jkzl5ojlxqpsq.png",
+      "sector": {
+        "id": "8",
+        "name": "Comércio (Varejo e Atacado)"
+      }
+    }
+  ],
+  "turns": [
+    {
+      "id": "1",
+      "name": "T1"
+    },
+    {
+      "id": "2",
+      "name": "T2"
+    },
+    {
+      "id": "3",
+      "name": "T3"
+    }
+  ],
+  "sectors": [
+    {
+      "id": "1",
+      "name": "Agricultura"
+    },
+    {
+      "id": "2",
+      "name": "Pecuária"
+    },
+    {
+      "id": "3",
+      "name": "Pesca"
+    },
+    {
+      "id": "4",
+      "name": "Mineração"
+    },
+    {
+      "id": "5",
+      "name": "Indústria de Transformação"
+    },
+    {
+      "id": "6",
+      "name": "Construção Civil"
+    },
+    {
+      "id": "7",
+      "name": "Energia"
+    },
+    {
+      "id": "8",
+      "name": "Comércio (Varejo e Atacado)"
+    },
+    {
+      "id": "9",
+      "name": "Transporte e Logística"
+    },
+    {
+      "id": "10",
+      "name": "Serviços Financeiros"
+    },
+    {
+      "id": "11",
+      "name": "Tecnologia da Informação (TI)"
+    },
+    {
+      "id": "12",
+      "name": "Educação"
+    },
+    {
+      "id": "13",
+      "name": "Saúde"
+    },
+    {
+      "id": "14",
+      "name": "Turismo e Hotelaria"
+    },
+    {
+      "id": "15",
+      "name": "Imobiliário"
+    },
+    {
+      "id": "16",
+      "name": "Comunicação e Mídia"
+    },
+    {
+      "id": "17",
+      "name": "Pesquisa e Desenvolvimento (P&D)"
+    },
+    {
+      "id": "18",
+      "name": "Serviços Profissionais e Consultoria"
+    },
+    {
+      "id": "19",
+      "name": "Administração Pública"
+    },
+    {
+      "id": "20",
+      "name": "Artes, Cultura e Entretenimento"
+    }
+  ],
+  "positions": [
+    {
+      "id": "1",
+      "name": "Auxiliar de Logística"
+    },
+    {
+      "id": "2",
+      "name": "Assistente de Logística"
+    },
+    {
+      "id": "3",
+      "name": "Analista de Logística"
+    },
+    {
+      "id": "4",
+      "name": "Coordenador de Logística"
+    },
+    {
+      "id": "5",
+      "name": "Supervisor de Logística"
+    },
+    {
+      "id": "6",
+      "name": "Gerente de Logística"
+    },
+    {
+      "id": "7",
+      "name": "Operador de Armazém"
+    },
+    {
+      "id": "8",
+      "name": "Conferente de Carga e Descarga"
+    },
+    {
+      "id": "9",
+      "name": "Motorista de Caminhão"
+    },
+    {
+      "id": "10",
+      "name": "Encarregado de Expedição"
+    },
+    {
+      "id": "11",
+      "name": "Assistente de Transporte"
+    },
+    {
+      "id": "12",
+      "name": "Analista de Transporte"
+    },
+    {
+      "id": "13",
+      "name": "Planejador de Logística"
+    },
+    {
+      "id": "14",
+      "name": "Analista de Suprimentos"
+    },
+    {
+      "id": "15",
+      "name": "Analista de Estoque"
+    },
+    {
+      "id": "16",
+      "name": "Operador de Empilhadeira"
+    },
+    {
+      "id": "17",
+      "name": "Expedidor de Mercadorias"
+    },
+    {
+      "id": "18",
+      "name": "Almoxarife"
+    },
+    {
+      "id": "19",
+      "name": "Enc. de Armazenagem"
+    },
+    {
+      "id": "20",
+      "name": "Analista de Distribuição"
+    }
+  ],
+  "states": [
+    {
+      "id": "1",
+      "name": "Acre",
+      "abbreviation": "AC"
+    },
+    {
+      "id": "2",
+      "name": "Alagoas",
+      "abbreviation": "AL"
+    },
+    {
+      "id": "3",
+      "name": "Amapá",
+      "abbreviation": "AP"
+    },
+    {
+      "id": "4",
+      "name": "Amazonas",
+      "abbreviation": "AM"
+    },
+    {
+      "id": "5",
+      "name": "Bahia",
+      "abbreviation": "BA"
+    },
+    {
+      "id": "6",
+      "name": "Ceará",
+      "abbreviation": "CE"
+    },
+    {
+      "id": "7",
+      "name": "Federal District",
+      "abbreviation": "DF"
+    },
+    {
+      "id": "8",
+      "name": "Espírito Santo",
+      "abbreviation": "ES"
+    },
+    {
+      "id": "9",
+      "name": "Goiás",
+      "abbreviation": "GO"
+    },
+    {
+      "id": "10",
+      "name": "Maranhão",
+      "abbreviation": "MA"
+    },
+    {
+      "id": "11",
+      "name": "Mato Grosso",
+      "abbreviation": "MT"
+    },
+    {
+      "id": "12",
+      "name": "Mato Grosso do Sul",
+      "abbreviation": "MS"
+    },
+    {
+      "id": "13",
+      "name": "Minas Gerais",
+      "abbreviation": "MG"
+    },
+    {
+      "id": "14",
+      "name": "Pará",
+      "abbreviation": "PA"
+    },
+    {
+      "id": "15",
+      "name": "Paraíba",
+      "abbreviation": "PB"
+    },
+    {
+      "id": "16",
+      "name": "Paraná",
+      "abbreviation": "PR"
+    },
+    {
+      "id": "17",
+      "name": "Pernambuco",
+      "abbreviation": "PE"
+    },
+    {
+      "id": "18",
+      "name": "Piauí",
+      "abbreviation": "PI"
+    },
+    {
+      "id": "19",
+      "name": "Rio de Janeiro",
+      "abbreviation": "RJ"
+    },
+    {
+      "id": "20",
+      "name": "Rio Grande do Norte",
+      "abbreviation": "RN"
+    },
+    {
+      "id": "21",
+      "name": "Rio Grande do Sul",
+      "abbreviation": "RS"
+    },
+    {
+      "id": "22",
+      "name": "Rondônia",
+      "abbreviation": "RO"
+    },
+    {
+      "id": "23",
+      "name": "Roraima",
+      "abbreviation": "RR"
+    },
+    {
+      "id": "24",
+      "name": "Santa Catarina",
+      "abbreviation": "SC"
+    },
+    {
+      "id": "25",
+      "name": "São Paulo",
+      "abbreviation": "SP"
+    },
+    {
+      "id": "26",
+      "name": "Sergipe",
+      "abbreviation": "SE"
+    },
+    {
+      "id": "27",
+      "name": "Tocantins",
+      "abbreviation": "TO"
+    }
+  ]
+}

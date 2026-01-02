@@ -1,0 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: 0;
+  font-family: 'Jost', sans-serif;
+
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  
+}
+
+.main-content {
+  margin-top: 80px; /* altura do seu navbar */
+  min-height: calc(100vh - 80px);
+}
+
+.section-title {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 75%;
+  margin: 2rem 0;
+}
+
+.section-title span {
+  background-color: #0D6EFD; /* vermelho escuro */
+  color: #fff;
+  padding: 6px 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.95rem;
+  z-index: 1;
+}
+
+.section-title::after {
+  content: "";
+  position: absolute;
+  bottom: 0; /* 👈 linha alinhada à base do texto */
+  left: 0;
+  width: 100%;
+  height: 3px; /* espessura da linha */
+  background-color: #0D6EFD;
+  z-index: 0;
+}
