@@ -3,12 +3,13 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "homepage": "https://pedro2753.github.io/rhm",
   "scripts": {
     "dev": "vite",
     "backend": "json-server --watch db.json --port 5000",
     "build": "vite build",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist",
+    "deploy": "npm run build && gh-pages -d dist",
     "lint": "eslint .",
     "preview": "vite preview"
   },
