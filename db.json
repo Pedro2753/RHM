@@ -1,6 +1,15 @@
 {
   "funcionarios": [],
-  "users": [],
+  "users": [
+    {
+      "id": "e522",
+      "name": "Admin",
+      "email": "admin@admin.com",
+      "password": "123@admin",
+      "gender": "Masculino",
+      "type": "Padrão"
+    }
+  ],
   "enterprises": [
     {
       "id": "0325",
