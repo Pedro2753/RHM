@@ -15,8 +15,8 @@ function Funcionarios() {
 
   useEffect(() => {
     if (message) {
-      const timer = setTimeout(() => setMessage(""), 3000); // ⏱️ apaga após 3 segundos
-      return () => clearTimeout(timer); // limpa o timer se o componente desmontar
+      const timer = setTimeout(() => setMessage(""), 3000);
+      return () => clearTimeout(timer);
     }
   }, [message]);
 
@@ -44,9 +44,7 @@ function Funcionarios() {
       .then(() => {
         setFuncionarios(funcionarios.filter((func) => func.id !== id));
         setFuncMessage("Funcionário removido com sucesso!");
-        setTimeout(() => {
-          setFuncMessage("");
-        }, 1000);
+        setTimeout(() => setFuncMessage(""), 1000);
       })
       .catch((err) => console.log(err));
   }
@@ -80,15 +78,17 @@ function Funcionarios() {
   return (
     <motion.div
       className="container py-4"
-      initial={{ opacity: 0, y: 30 }} // começa invisível e mais abaixo
-      animate={{ opacity: 1, y: 0 }} // aparece suavemente
-      exit={{ opacity: 0, y: -30 }} // sai suavemente para cima
-      transition={{ duration: 0.5 }} // meio segundo de transição
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -30 }}
+      transition={{ duration: 0.5 }}
     >
       <div className="container py-4 ">
         {/* Título e botão */}
         <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
-          <h1 className="text-primary section-title mb-0">Meus Funcionários</h1>
+          <h1 className="text-primary section-title mb-0">
+            Meus Funcionários
+          </h1>
 
           <div className="d-flex align-items-center gap-2">
             <input
@@ -128,7 +128,9 @@ function Funcionarios() {
           {funcionarios.length > 0 &&
             funcionarios
               .filter((func) =>
-                func.name.toLowerCase().includes(searchTerm.toLowerCase())
+                (func.name ?? "")
+                  .toLowerCase()
+                  .includes(searchTerm.toLowerCase())
               )
               .map((func) => (
                 <div
@@ -139,10 +141,10 @@ function Funcionarios() {
                     <div className="card-body text-center">
                       <img
                         src={
-                          func.photo ||
+                          func.photo ??
                           "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"
                         }
-                        alt={func.name}
+                        alt={func.name ?? "Funcionário"}
                         className="rounded-circle mb-3"
                         style={{
                           width: "120px",
@@ -150,20 +152,27 @@ function Funcionarios() {
                           objectFit: "cover",
                         }}
                       />
+
                       <h5 className="card-title text-dark fw-bold mb-2">
-                        {func.name}
+                        {func.name ?? "N/A"}
                       </h5>
+
                       <p className="card-text text-muted small mb-2">
-                        {func.position?.name || "Cargo não informado"}
+                        {func.position?.name ?? "N/A"}
                       </p>
+
                       <p className="mb-2">
-                        <strong>Setor:</strong> {func.sector?.name || "—"}
+                        <strong>Setor:</strong>{" "}
+                        {func.sector?.name ?? "N/A"}
                       </p>
+
                       <p className="mb-2">
-                        <strong>Salário:</strong> {func.wage}
+                        <strong>Salário:</strong>{" "}
+                        {func.wage ?? "N/A"}
                       </p>
+
                       <p className="text-muted small mb-2">
-                        {func.city} - {func.state?.name}
+                        {func.city ?? "N/A"} - {func.state?.name ?? "N/A"}
                       </p>
 
                       <div className="d-flex justify-content-center gap-2 mt-3">

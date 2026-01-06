@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import Loading from "../layout/Loading";
+import { Link } from "react-router-dom";
 
 function FuncForm({ handleSubmit, btnText, funcData }) {
   const [enterprises, setEnterprises] = useState([]);
@@ -372,12 +373,19 @@ function FuncForm({ handleSubmit, btnText, funcData }) {
             }}
           >
             <option value="">Selecione a empresa</option>
+            
             {enterprises.map((s) => (
               <option key={s.id} value={s.id}>
                 {s.name}
               </option>
             ))}
           </select>
+                      <Link
+                        to="/newenter"
+                        className="btn btn-outline-primary btn-md mt-2 shadow-sm"
+                      >
+                        Cadastrar empresa
+                      </Link>
         </div>
 
         <div className="col-md-6 mb-3">

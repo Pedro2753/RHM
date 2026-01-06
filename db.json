@@ -7,7 +7,8 @@
       "email": "admin@admin.com",
       "password": "123@admin",
       "gender": "Masculino",
-      "type": "Padrão"
+      "type": "Padrão",
+      "fone": "(99) 99999-9999"
     }
   ],
   "enterprises": [
@@ -42,7 +43,7 @@
           "id": "499e8c3c-dae8-4f6a-b37b-048abbdaba3b"
         }
       ],
-      "photo": "https://res.cloudinary.com/dymuksbru/image/upload/v1760978305/cpdsf96jkzl5ojlxqpsq.png",
+      "photo": "https://res.cloudinary.com/dymuksbru/image/upload/v1767391850/zxeilifwjp5degw0p0zm.png",
       "sector": {
         "id": "8",
         "name": "Comércio (Varejo e Atacado)"

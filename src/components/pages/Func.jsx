@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useEducation } from "./FuncHooks/useEducation";
 import { useExperience } from "./FuncHooks/useExperience";
+import { useNavigate } from "react-router-dom";
 
 import Loading from "../layout/Loading";
 import Message from "../layout/Message";
@@ -22,6 +23,7 @@ function Func() {
   const [showEducationForm, setShowEducationForm] = useState(false);
   const [message, setMessage] = useState();
   const [type, setType] = useState();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setTimeout(() => {
@@ -93,8 +95,18 @@ function Func() {
           {/* Card principal */}
           <div className="card shadow-sm mb-4">
             <div className="card-body">
+              {/* Botão voltar */}
+              <button
+                className="btn btn-outline-primary mb-2"
+                onClick={() => navigate(-1)}
+              >
+                ← Voltar
+              </button>
+
               <div className="d-flex justify-content-between align-items-center mb-3">
-                <h2 className="fw-bold text-primary section-title">{func.name}</h2>
+                <h2 className="fw-bold text-primary section-title">
+                  {func.name}
+                </h2>
                 <button
                   className={`btn btn-${
                     showFuncForm ? "primary" : "outline-primary"

@@ -3,13 +3,13 @@ import Loading from "../layout/Loading";
 import RadioGroup from "../form/RadioGroup";
 import SubmitButton from "../form/SubmitButton";
 
-function UserForm({ handleSubmit, btnText, userData, getData}) {
+
+function UserForm({ handleSubmit, btnText, userData, getData }) {
   const [user, setUser] = useState(userData || {});
   const [preview, setPreview] = useState(null);
   const [removeLoading, setRemoveLoading] = useState(true);
   const [isPhotoLoading] = useState(false);
-
-  let random_id = Math.floor(Math.random() * 10000000);
+  const [showPassword, setShowPassword] = useState(false);
 
   async function submit(e) {
     e.preventDefault();
@@ -21,7 +21,7 @@ function UserForm({ handleSubmit, btnText, userData, getData}) {
       alert("Aguarde o envio da imagem antes de salvar.");
       return;
     }
-    const exists = await checkEmailExists(user.email);
+    const exists = await checkEmailExists(user.email, user.id);
     if (exists) {
       alert("E-mail já cadastrado!");
       return;
@@ -63,9 +63,12 @@ function UserForm({ handleSubmit, btnText, userData, getData}) {
 
   function handlePhoneChange(e) {
     let value = e.target.value.replace(/\D/g, "");
-    if (value.length > 10) value = value.replace(/(\d{2})(\d{5})(\d{4}).*/, "($1) $2-$3");
-    else if (value.length > 6) value = value.replace(/(\d{2})(\d{4})(\d{0,4})/, "($1) $2-$3");
-    else if (value.length > 2) value = value.replace(/(\d{2})(\d{0,4})/, "($1) $2");
+    if (value.length > 10)
+      value = value.replace(/(\d{2})(\d{5})(\d{4}).*/, "($1) $2-$3");
+    else if (value.length > 6)
+      value = value.replace(/(\d{2})(\d{4})(\d{0,4})/, "($1) $2-$3");
+    else if (value.length > 2)
+      value = value.replace(/(\d{2})(\d{0,4})/, "($1) $2");
     else value = value.replace(/(\d{0,2})/, "($1");
     setUser({ ...user, fone: value });
   }
@@ -75,9 +78,16 @@ function UserForm({ handleSubmit, btnText, userData, getData}) {
     return regex.test(email);
   }
 
-  async function checkEmailExists(email) {
+  async function checkEmailExists(email, userId = null) {
     const res = await fetch(`http://localhost:5000/users?email=${email}`);
     const data = await res.json();
+
+    // Se estiver editando, ignora o próprio usuário
+    if (userId) {
+      return data.some((u) => u.id !== userId);
+    }
+
+    // Se estiver criando
     return data.length > 0;
   }
 
@@ -85,8 +95,15 @@ function UserForm({ handleSubmit, btnText, userData, getData}) {
     <form onSubmit={submit} className="needs-validation" noValidate>
       {/* ID */}
       <div className="mb-3">
-        <label htmlFor="func_id" className="form-label">ID do colaborador</label>
-        <input type="text" className="form-control" name="func_id" value={random_id} disabled />
+        <label htmlFor="func_id" className="form-label">
+          ID do colaborador
+        </label>
+        <input
+          type="text"
+          className="form-control"
+          value={user.id || ""}
+          disabled
+        />
       </div>
 
       <div className="mb-3">
@@ -120,17 +137,30 @@ function UserForm({ handleSubmit, btnText, userData, getData}) {
       </div>
 
       {/* Senha */}
-      <div className="mb-3">
-        <label className="form-label">Senha</label>
-        <input
-          type="password"
-          className="form-control"
-          name="password"
-          placeholder="(Mínimo 8 dígitos)"
-          onChange={handleChange}
-          value={user.password || ""}
-        />
-      </div>
+     <div className="mb-3">
+  <label className="form-label">Senha</label>
+
+  <div className="input-group">
+    <input
+      type={showPassword ? "text" : "password"}
+      className="form-control"
+      name="password"
+      placeholder="(Mínimo 8 dígitos)"
+      onChange={handleChange}
+      value={user.password || ""}
+    />
+
+    <button
+      type="button"
+      className="btn btn-outline-secondary"
+      onClick={() => setShowPassword(!showPassword)}
+      aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
+    >
+      {showPassword ? "Ocultar" : "Mostrar"}
+    </button>
+  </div>
+</div>
+
 
       {/* Telefone */}
       <div className="mb-3">
@@ -163,7 +193,12 @@ function UserForm({ handleSubmit, btnText, userData, getData}) {
       {/* Foto */}
       <div className="mb-3">
         <label className="form-label">Foto de Usuário</label>
-        <input type="file" accept="image/*" className="form-control" onChange={handlePhotoChange} />
+        <input
+          type="file"
+          accept="image/*"
+          className="form-control"
+          onChange={handlePhotoChange}
+        />
         {!removeLoading ? (
           <Loading />
         ) : (
