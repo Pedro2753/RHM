@@ -2,6 +2,8 @@ import { useLocation } from "react-router-dom";
 import Loading from "../layout/Loading";
 import LinkButton from "../layout/LinkButton";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
+
 
 import { useState, useEffect } from "react";
 
@@ -176,12 +178,12 @@ function Funcionarios() {
                       </p>
 
                       <div className="d-flex justify-content-center gap-2 mt-3">
-                        <a
-                          href={`/func/${func.id}`}
+                        <Link
+                          to={`/func/${func.id}`}
                           className="btn btn-outline-primary btn-sm"
                         >
                           Ver Detalhes
-                        </a>
+                        </Link>
                         <button
                           className="btn btn-outline-danger btn-sm"
                           onClick={() => removeFunc(func.id)}
