@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
 function Contact() {
   return (
@@ -20,51 +21,50 @@ function Contact() {
               RH Manger é um software web feito como um projeto pessoal que
               utiliza como base as tecnologias React, Boostrap e JSON server
               como metodo de armazenamento, o que faz todos os dados cadastrados
-              serem armazenados localmente no navegador e não em um servidor na
-              nuvem.
+              serem armazenados internamente, no proprio db.json do repositório
+              do app. APIs usadas: OpenWeather, ViaCEP, Abstract API e Random
+              User API para auto-preenchimento dos formulários.
             </p>
             <p className="fs-5">Acesse o codigo fonte para mais detalhes:</p>
             <div className="mb-5">
               <Link
-                to="/newfunc"
+                to="https://github.com/Pedro2753/RHM"
                 className="btn btn-outline-primary btn-lg shadow-sm"
               >
                 Codigo fonte
               </Link>
             </div>
-             <p className="fs-4">Minhas redes:</p>
-        <div className="d-flex gap-2">
-          <a href="https://www.linkedin.com/in/pedrohmf-21a166164/">
-            <button className="btn btn-outline-primary btn-lg">
-              <i className="bi bi-linkedin me-2 "></i>Linkedin
-            </button>
-          </a>
-          <a href="https://github.com/Pedro2753">
-            <button className="btn btn-outline-primary btn-lg">
-              <i className="bi bi-github me-2"></i> GitHub
-            </button>
-          </a>
-          <a href="https://wa.me/5521981744994">
-            <button className="btn btn-outline-primary btn-lg">
-              <i className="bi bi-whatsapp me-2"></i> Whastapp
-            </button>
-          </a>
-          <a href="https://www.instagram.com/pedro13th_/">
-            <button className="btn btn-outline-primary btn-lg">
-              <i className="bi bi-instagram me-2"></i> Instagram
-            </button>
-          </a>
-        </div>
+            <p className="fs-4">Minhas redes:</p>
+            <div className="d-flex gap-2">
+              <a href="https://www.linkedin.com/in/pedrohmf-21a166164/">
+                <button className="btn btn-outline-primary btn-lg">
+                  <i className="bi bi-linkedin me-2 "></i>Linkedin
+                </button>
+              </a>
+              <a href="https://github.com/Pedro2753">
+                <button className="btn btn-outline-primary btn-lg">
+                  <i className="bi bi-github me-2"></i> GitHub
+                </button>
+              </a>
+              <a href="https://wa.me/5521981744994">
+                <button className="btn btn-outline-primary btn-lg">
+                  <i className="bi bi-whatsapp me-2"></i> Whastapp
+                </button>
+              </a>
+              <a href="https://www.instagram.com/pedro13th_/">
+                <button className="btn btn-outline-primary btn-lg">
+                  <i className="bi bi-instagram me-2"></i> Instagram
+                </button>
+              </a>
+            </div>
           </div>
           <div>
-            <img
-              style={{
-                width: "400px",
-                height: "400px",
-                objectFit: "cover",
-              }}
-              src="src\assets\img\github-logo.png"
-            ></img>
+            <DotLottieReact
+              src="https://lottie.host/6d9f67d2-b4f5-415d-92c8-5028d36171f2/VPK4LWPxcw.lottie"
+              loop
+              autoplay
+              style={{ width: 300, height: 300 }}
+            />
           </div>
         </div>
       </section>

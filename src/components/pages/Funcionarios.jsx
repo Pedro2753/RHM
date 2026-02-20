@@ -3,6 +3,8 @@ import Loading from "../layout/Loading";
 import LinkButton from "../layout/LinkButton";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import { supabase } from "../services/supabase";
+
 
 
 import { useState, useEffect } from "react";
@@ -15,67 +17,59 @@ function Funcionarios() {
   const [message, setMessage] = useState(location.state?.message || "");
   const [searchTerm, setSearchTerm] = useState("");
 
-  useEffect(() => {
-    if (message) {
-      const timer = setTimeout(() => setMessage(""), 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [message]);
+ useEffect(() => {
+  async function loadFuncionarios() {
+    const { data, error } = await supabase
+      .from("funcionarios")
+      .select("*");
 
-  useEffect(() => {
-    setTimeout(() => {
-      fetch("http://localhost:5000/funcionarios", {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      })
-        .then((resp) => resp.json())
-        .then((data) => {
-          setFuncionarios(data);
-          setRemoveLoading(true);
-        })
-        .catch((err) => console.log(err));
-    }, 1000);
-  }, []);
-
-  function removeFunc(id) {
-    fetch(`http://localhost:5000/funcionarios/${id}`, {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-    })
-      .then((resp) => resp.json())
-      .then(() => {
-        setFuncionarios(funcionarios.filter((func) => func.id !== id));
-        setFuncMessage("Funcionário removido com sucesso!");
-        setTimeout(() => setFuncMessage(""), 1000);
-      })
-      .catch((err) => console.log(err));
-  }
-
-  function removeAllFuncionarios() {
-    if (
-      !window.confirm("Tem certeza que deseja remover TODOS os funcionários?")
-    ) {
+    if (error) {
+      console.error(error);
       return;
     }
 
-    setRemoveLoading(false);
-
-    Promise.all(
-      funcionarios.map((func) =>
-        fetch(`http://localhost:5000/funcionarios/${func.id}`, {
-          method: "DELETE",
-          headers: { "Content-Type": "application/json" },
-        })
-      )
-    )
-      .then(() => {
-        setFuncionarios([]);
-        setFuncMessage("Todos os funcionários foram removidos com sucesso!");
-        setTimeout(() => setFuncMessage(""), 3000);
-        setRemoveLoading(true);
-      })
-      .catch((err) => console.log(err));
+    setFuncionarios(data);
+    setRemoveLoading(true);
   }
+
+  loadFuncionarios();
+}, []);
+
+
+async function removeFunc(id) {
+  const { error } = await supabase
+    .from("funcionarios")
+    .delete()
+    .eq("id", id);
+
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  setFuncionarios(funcionarios.filter((func) => func.id !== id));
+  setFuncMessage("Funcionário removido com sucesso!");
+  setTimeout(() => setFuncMessage(""), 2000);
+}
+
+  async function removeAllFuncionarios() {
+  if (!window.confirm("Tem certeza que deseja remover TODOS os funcionários?"))
+    return;
+
+  const { error } = await supabase
+    .from("funcionarios")
+    .delete()
+    .neq("id", "0"); // deleta todos
+
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  setFuncionarios([]);
+  setFuncMessage("Todos os funcionários foram removidos!");
+}
+
 
   return (
     <motion.div

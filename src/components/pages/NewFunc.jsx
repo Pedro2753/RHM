@@ -1,31 +1,30 @@
 import { useNavigate } from "react-router-dom";
 import FuncForm from "../func/FuncForm";
 import { motion } from "framer-motion";
+import { supabase } from "../services/supabase";
 
 
 function NewFunc() {
   const navigate = useNavigate();
 
   async function createPost(func) {
-    func.experiences = [];
-    func.educations = [];
+  func.experiences = [];
+  func.educations = [];
 
-    try {
-      const resp = await fetch("http://localhost:5000/funcionarios", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(func),
-      });
+  const { error } = await supabase
+    .from("funcionarios")
+    .insert([func]);
 
-      const data = await resp.json();
-      console.log("Funcionário criado:", data);
-
-      // Redireciona com mensagem
-      navigate("/funcionarios", { state: { message: "Funcionário cadastrado com sucesso!" } });
-    } catch (err) {
-      console.error("Erro ao cadastrar funcionário:", err);
-    }
+  if (error) {
+    console.error("Erro ao cadastrar funcionário:", error);
+    return;
   }
+
+  navigate("/funcionarios", {
+    state: { message: "Funcionário cadastrado com sucesso!" },
+  });
+}
+
 
   return (
             <motion.div

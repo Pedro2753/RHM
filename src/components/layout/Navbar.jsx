@@ -13,6 +13,12 @@ function Navbar() {
   }, [navigate, user]);
 
   function handleLogout() {
+
+      const confirmLogout = window.confirm(
+    "Você deseja realmente fazer logout?"
+  );
+
+  if (!confirmLogout) return;
     localStorage.removeItem("user");
     navigate("/login");
   }

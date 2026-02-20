@@ -1,11 +1,15 @@
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 function Home() {
   const [time, setTime] = useState(new Date());
   const [weather, setWeather] = useState(null);
+  const location = useLocation();
+const [message, setMessage] = useState(location.state?.message || "");
+
 
   // Hora atual
   useEffect(() => {
@@ -14,6 +18,13 @@ function Home() {
     }, 1000);
     return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+  if (message) {
+    const timer = setTimeout(() => setMessage(""), 3000);
+    return () => clearTimeout(timer);
+  }
+}, [message]);
 
   // Clima (Open-Meteo – sem API key)
   useEffect(() => {
@@ -33,6 +44,12 @@ function Home() {
       exit={{ opacity: 0, y: -30 }}
       transition={{ duration: 0.5 }}
     >
+
+      {message && (
+  <div className="alert alert-success text-center mt-3" role="alert">
+    {message}
+  </div>
+)}
       {/* TOPO: Hora e Clima */}
       <div className="w-100 d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
         {/* Hora */}

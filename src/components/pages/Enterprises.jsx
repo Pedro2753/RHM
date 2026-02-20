@@ -4,6 +4,8 @@ import Loading from "../layout/Loading";
 import LinkButton from "../layout/LinkButton";
 import { motion } from "framer-motion";
 import logo from "../../assets/img/enter_logo.png";
+import { Link } from "react-router-dom";
+import { supabase } from "../services/supabase";
 
 function Enterprises() {
   const [enterprises, setEnterprises] = useState([]);
@@ -11,7 +13,7 @@ function Enterprises() {
   const [enterpriseMessage, setEnterpriseMessage] = useState("");
   const location = useLocation();
   const [message, setMessage] = useState(location.state?.message || "");
-  const [searchTerm, setSearchTerm] = useState(""); // 🔍 novo estado
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     if (message) {
@@ -20,28 +22,41 @@ function Enterprises() {
     }
   }, [message]);
 
+  // 🔵 BUSCAR EMPRESAS DO SUPABASE (COM JOIN)
   useEffect(() => {
-    setTimeout(() => {
-      fetch("http://localhost:5000/enterprises")
-        .then((resp) => resp.json())
-        .then((data) => {
-          setEnterprises(data);
-          setRemoveLoading(true);
-        })
-        .catch(console.log);
-    }, 1000);
+    async function loadEnterprises() {
+      const { data, error } = await supabase
+        .from("enterprises")
+        .select(`
+          *,
+          states ( name ),
+          sectors ( name )
+        `);
+
+      if (error) {
+        console.log(error);
+      } else {
+        setEnterprises(data);
+        setRemoveLoading(true);
+      }
+    }
+
+    loadEnterprises();
   }, []);
 
-  function removeFunc(id) {
-    fetch(`http://localhost:5000/enterprises/${id}`, {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-    })
-      .then(() => {
-        setEnterprises(enterprises.filter((e) => e.id !== id));
-        setEnterpriseMessage("Empresa removida com sucesso!");
-      })
-      .catch(console.log);
+  // 🔴 REMOVER EMPRESA
+  async function removeFunc(id) {
+    const { error } = await supabase
+      .from("enterprises")
+      .delete()
+      .eq("id", id);
+
+    if (error) {
+      console.log(error);
+    } else {
+      setEnterprises(enterprises.filter((e) => e.id !== id));
+      setEnterpriseMessage("Empresa removida com sucesso!");
+    }
   }
 
   return (
@@ -53,7 +68,7 @@ function Enterprises() {
       transition={{ duration: 0.5 }}
     >
       <div className="container my-4">
-        {/* 🔹 Título + pesquisa + botão */}
+        {/* Título + pesquisa + botão */}
         <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
           <h1 className="text-primary section-title mb-0">Empresas</h1>
 
@@ -69,13 +84,13 @@ function Enterprises() {
           </div>
         </div>
 
-        {/* Mensagens de sucesso */}
+        {/* Mensagens */}
         {message && <div className="alert alert-success">{message}</div>}
         {enterpriseMessage && (
           <div className="alert alert-success">{enterpriseMessage}</div>
         )}
 
-        {/* 🔹 Lista filtrada */}
+        {/* Lista */}
         <div className="row g-3">
           {enterprises.length > 0 &&
             enterprises
@@ -101,27 +116,33 @@ function Enterprises() {
                           objectFit: "cover",
                         }}
                       />
+
                       <h5 className="card-title text-dark fw-bold mb-2">
                         {enterprise.name}
                       </h5>
+
                       <p className="card-text text-muted small mb-2">
-                        {`(${enterprise.razao})` || "Razão não informada"}
+                        ({enterprise.razao || "Razão não informada"})
                       </p>
+
                       <p className="card-text text-muted small mb-2">
-                        {enterprise.sector?.name || "Setor não informado"}
+                        {enterprise.sectors?.name || "Setor não informado"}
                       </p>
+
                       <p className="text-muted small mb-2">
-                        {enterprise.city} - {enterprise.state?.name}
+                        {enterprise.city} - {enterprise.states?.name}
                       </p>
+
                       <p className="mb-2">{enterprise.status}</p>
 
                       <div className="d-flex justify-content-center gap-2 mt-3">
-                        <a
-                          href={`/enter/${enterprise.id}`}
+                        <Link
+                          to={`/enter/${enterprise.id}`}
                           className="btn btn-outline-primary btn-sm"
                         >
                           Ver Detalhes
-                        </a>
+                        </Link>
+
                         <button
                           className="btn btn-outline-danger btn-sm"
                           onClick={() => removeFunc(enterprise.id)}

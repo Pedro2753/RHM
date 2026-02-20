@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import NewUser from "../pages/NewUser";
+import { supabase } from "../services/supabase";
+
 
 
 function Login() {
@@ -30,22 +32,28 @@ function Login() {
   }
 
   async function handleLogin(e) {
-    e.preventDefault();
+  e.preventDefault();
 
-    const res = await fetch("http://localhost:5000/users");
-    const users = await res.json();
+  const { data: users, error } = await supabase
+    .from("users")
+    .select("*");
 
-    const user = users.find(
-      (u) => u.email === email && u.password === password
-    );
-
-    if (user) {
-      localStorage.setItem("user", JSON.stringify(user));
-      navigate("/");
-    } else {
-      alert("Credenciais inválidas");
-    }
+  if (error) {
+    alert("Erro ao conectar com banco");
+    return;
   }
+
+  const user = users.find(
+    (u) => u.email === email && u.password === password
+  );
+
+  if (user) {
+    localStorage.setItem("user", JSON.stringify(user));
+    navigate("/");
+  } else {
+    alert("Credenciais inválidas");
+  }
+}
 
   return (
      <motion.div

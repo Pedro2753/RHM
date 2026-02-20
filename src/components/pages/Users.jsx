@@ -4,68 +4,79 @@ import Loading from "../layout/Loading";
 import LinkButton from "../layout/LinkButton";
 import UserCard from "../user/UserCard";
 import { motion } from "framer-motion";
+import { supabase } from "../services/supabase";
 
 function Users() {
   const [users, setUsers] = useState([]);
   const [removeLoading, setRemoveLoading] = useState(false);
   const [userMessage, setUserMessage] = useState("");
-  const [searchTerm, setSearchTerm] = useState(""); // 🆕 campo de busca
+  const [searchTerm, setSearchTerm] = useState("");
   const location = useLocation();
 
   const message = location.state?.message || "";
 
-  // 🕒 Carregar usuários
+  // 🔹 Buscar usuários
   useEffect(() => {
-    setTimeout(() => {
-      fetch("http://localhost:5000/users")
-        .then((resp) => resp.json())
-        .then((data) => {
-          setUsers(data);
-          setRemoveLoading(true);
-        })
-        .catch(console.log);
-    }, 1000);
+    async function fetchUsers() {
+      const { data, error } = await supabase
+        .from("users")
+        .select("*");
+
+      if (error) {
+        console.error("Erro ao buscar usuários:", error);
+      } else {
+        setUsers(data);
+      }
+
+      setRemoveLoading(true);
+    }
+
+    fetchUsers();
   }, []);
 
-  // 🗑️ Remover usuário
-  function removeFunc(id) {
-    fetch(`http://localhost:5000/users/${id}`, {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-    })
-      .then(() => {
-        setUsers(users.filter((user) => user.id !== id));
-        setUserMessage("Usuário removido com sucesso!");
-        setTimeout(() => setUserMessage(""), 2000);
-      })
-      .catch(console.log);
+  // 🔹 Remover usuário
+  async function removeFunc(id) {
+    const { error } = await supabase
+      .from("users")
+      .delete()
+      .eq("id", id);
+
+    if (error) {
+      console.error("Erro ao remover:", error);
+      return;
+    }
+
+    setUsers(users.filter((user) => user.id !== id));
+    setUserMessage("Usuário removido com sucesso!");
+    setTimeout(() => setUserMessage(""), 2000);
   }
 
-  function removeAllUsers() {
+  // 🔹 Remover todos
+  async function removeAllUsers() {
     if (!window.confirm("Tem certeza que deseja remover TODOS os usuários?")) {
       return;
     }
 
     setRemoveLoading(false);
 
-    Promise.all(
-      users.map((user) =>
-        fetch(`http://localhost:5000/users/${user.id}`, {
-          method: "DELETE",
-          headers: { "Content-Type": "application/json" },
-        })
-      )
-    )
-      .then(() => {
-        setUsers([]);
-        setUserMessage("Todos os usuários foram removidos!");
-        setTimeout(() => setUserMessage(""), 3000);
-        setRemoveLoading(true);
-      })
-      .catch(console.log);
+    const { error } = await supabase
+      .from("users")
+      .delete()
+      .neq("id", 0); // remove todos
+
+    if (error) {
+      console.error("Erro ao remover todos:", error);
+      setRemoveLoading(true);
+      return;
+    }
+
+    setUsers([]);
+    setUserMessage("Todos os usuários foram removidos!");
+    setTimeout(() => setUserMessage(""), 3000);
+    setRemoveLoading(true);
   }
 
-  // 🔍 Filtragem de usuários
+  // 🔍 Filtro
   const filteredUsers = users.filter((user) =>
     user.name?.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -79,7 +90,6 @@ function Users() {
       transition={{ duration: 0.5 }}
     >
       <div className="container my-4">
-        {/* 🔹 Título + botão + pesquisa */}
         <div className="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
           <h1 className="text-primary section-title mb-0">Usuários</h1>
 
@@ -105,19 +115,18 @@ function Users() {
           </div>
         </div>
 
-        {/* 🔹 Mensagens */}
         {message && (
-          <div className="alert alert-success text-center" role="alert">
+          <div className="alert alert-success text-center">
             {message}
           </div>
         )}
+
         {userMessage && (
-          <div className="alert alert-success text-center" role="alert">
+          <div className="alert alert-success text-center">
             {userMessage}
           </div>
         )}
 
-        {/* 🔹 Lista de usuários */}
         <div className="row g-3">
           {filteredUsers.length > 0 &&
             filteredUsers.map((user) => (
@@ -142,7 +151,9 @@ function Users() {
           )}
 
           {removeLoading && filteredUsers.length === 0 && (
-            <p className="text-center text-muted">Nenhum usuário encontrado!</p>
+            <p className="text-center text-muted">
+              Nenhum usuário encontrado!
+            </p>
           )}
         </div>
       </div>

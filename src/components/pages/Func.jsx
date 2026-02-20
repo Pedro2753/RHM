@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useEducation } from "./FuncHooks/useEducation";
 import { useExperience } from "./FuncHooks/useExperience";
 import { useNavigate } from "react-router-dom";
-
+import { supabase } from "../services/supabase";
 import Loading from "../layout/Loading";
 import Message from "../layout/Message";
 import FuncForm from "../func/FuncForm";
@@ -26,36 +26,44 @@ function Func() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setTimeout(() => {
-      fetch(`http://localhost:5000/funcionarios/${id}`, {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      })
-        .then((resp) => resp.json())
-        .then((data) => {
-          setFunc(data);
-          setExperiences(data.experiences);
-          setEducations(data.educations);
-        })
-        .catch((err) => console.log(err));
-    }, 1000);
-  }, [id]);
+  async function loadFunc() {
+    const { data, error } = await supabase
+      .from("funcionarios")
+      .select("*")
+      .eq("id", id)
+      .single();
 
-  function editPost(func) {
-    fetch(`http://localhost:5000/funcionarios/${func.id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(func),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setFunc(data);
-        setShowFuncForm(false);
-        setMessage("Funcionário atualizado com sucesso!");
-        setType("success");
-      })
-      .catch((err) => console.log(err));
+    if (error) {
+      console.error(error);
+      return;
+    }
+
+    setFunc(data);
+    setExperiences(data.experiences || []);
+    setEducations(data.educations || []);
   }
+
+  loadFunc();
+}, [id]);
+
+ async function editPost(func) {
+  const { data, error } = await supabase
+    .from("funcionarios")
+    .update(func)
+    .eq("id", func.id)
+    .select();
+
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  setFunc(data[0]);
+  setShowFuncForm(false);
+  setMessage("Funcionário atualizado com sucesso!");
+  setType("success");
+}
+
 
   const { createEducation, removeEducation } = useEducation({
     func,
